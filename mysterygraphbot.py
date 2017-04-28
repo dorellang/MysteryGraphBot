@@ -7,6 +7,7 @@ import logging
 import requests
 from requests import Response
 from marshmallow import Schema, fields
+from marshmallow.exceptions import ValidationError
 from telegram.bot import Bot
 
 def main():
@@ -197,13 +198,32 @@ class MysteryGraphBot:
         self._data = value
 
 
+class IntegerOrStrField(fields.Field):
+    default_error_messages = {
+        'invalid': 'Not a valid string or integer.'
+    }
+
+    def _serialize(self, value, attr, obj):
+        if value is None:
+            return None
+        if not isinstance(value, str) and not isinstance(value, int):
+            self.fail('invalid')
+        return value
+
+    def _deserialize(self, value, attr, data):
+        return value
+
+    def _validate(self, value):
+        if not isinstance(value, str) and not isinstance(value, int):
+            self.fail('invalid')
+
 class Config(Schema):
     token = fields.Str(required=True) 
     data_file = fields.Str(required=True)
     graph_url = fields.Url(required=True)
     graph_visualization_url = fields.Str(required=True)
     refresh_time = fields.Integer(required=True)
-    chat_whitelist = fields.List(fields.Str, required=True)
+    chat_whitelist = fields.List(IntegerOrStrField, required=True)
     log_file = fields.Str(required=True)
 
 
@@ -277,11 +297,42 @@ def load_config():
             "fields:",
             file=sys.stderr
         )
-        for field, err_msgs  in e.errors.items():
-            err_msg = ' '.join(err_msgs)
-            print(" - {} : {}".format(field, err_msg), file=sys.stderr)
+        print_marshmallow_errors(e.errors)
         sys.exit(1)
     return config
+
+def print_marshmallow_errors(errors):
+    go_through_marshmallow_errors([], errors)
+
+def go_through_marshmallow_errors(path, errors):
+    if isinstance(errors, list):
+        print_marshmallow_error(path, errors)
+    elif isinstance(errors, dict):
+        for field, err_msgs in errors.items():
+            go_through_marshmallow_errors(path + [field], errors[field])
+    else:
+        raise ValueError("Unexpected marshmallow error object")
+
+def print_marshmallow_error(path, err_msgs):
+    err_msg = ' '.join(err_msgs)
+    print(" - {} : {}".format(path_to_string(path), err_msg), file=sys.stderr)
+
+def path_to_string(path):
+    def item_to_str(item):
+        if isinstance(item, str):
+            return ".{}".format(item)
+        elif isinstance(item, int):
+            return "[{}]".format(str(item))
+        else:
+            raise ValueError("Path must be a list of int and str items")
+
+    result = ''.join(item_to_str(item) for item in path)
+
+    if path and isinstance(path[0], str):
+        return result[1:]
+    else:
+        return result
+
 
 def setup_logger(config):
     global logger
