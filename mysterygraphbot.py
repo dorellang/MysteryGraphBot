@@ -255,20 +255,26 @@ def load_data_with_schema_from_string(schema, string):
 
 def load_config():
     try:
-        config = load_data_with_schema_from_json_path(Config(), 'config.json')
+        config = load_data_with_schema_from_json_path(
+            Config(), 'mysterygraphbot.conf'
+        )
     except OSError:
         msg = (
-            "Couldn't open file 'config.json'. Please check that it is "
-            "in the current working directory."
+            "Couldn't open file 'mysterygraphbot.conf'. Please check that it "
+            "is in the current working directory."
         )
         print(msg, file=sys.stderr)
         sys.exit(1)
     except json.JSONDecodeError:
-        print("'config.json' is not a valid JSON file.", file=sys.stderr)
+        print(
+            "'mysterygraphbot.conf' is not a valid JSON file.",
+            file=sys.stderr
+        )
         sys.exit(1)
     except SchemaLoadError as e:
         print(
-            "'config.json' format error. Please check the following fields:",
+            "'mysterygraphbot.conf' format error. Please check the following "
+            "fields:",
             file=sys.stderr
         )
         for field, err_msgs  in e.errors.items():
