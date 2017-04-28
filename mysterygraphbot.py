@@ -9,6 +9,12 @@ from requests import Response
 from marshmallow import Schema, fields
 from telegram.bot import Bot
 
+def main():
+    config = load_config()
+    setup_logger(config)
+    bot = MysteryGraphBot(config)
+    bot.start()
+
 class MysteryGraphBot:
     def __init__(self, config):
         self.bot = Bot(config['token'])
@@ -247,10 +253,6 @@ def load_data_with_schema_from_string(schema, string):
         raise SchemaLoadError(type(schema), result.errors)
     return result.data
 
-
-if __name__ == '__main__':
-    main()
-
 def load_config():
     try:
         config = load_data_with_schema_from_json_path(Config(), 'config.json')
@@ -287,8 +289,5 @@ def setup_logger(config):
     handler.setFormatter(formatter)
     logger.addHandler(handler)
 
-def main():
-    config = load_config()
-    setup_logger(config)
-    bot = MysteryGraphBot(config)
-    bot.start()
+if __name__ == '__main__':
+    main()
