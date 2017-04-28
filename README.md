@@ -110,7 +110,7 @@ ran from. The JSON file has the following structure:
 * **refresh\_time**. *Integer*. The number of seconds that will be between each
     polling to the graph.
 
-* **chat\_whitelist**. *List of Strings*. The list of Telegram chat\_ids that
+* **chat\_whitelist**. *[(Integer | String)]*. The list of Telegram chat\_ids that
     the bot will try to send the graph updates to. Please note that the fact a
     chat\_id is here does not mean that the updates will be effectively sent to
     that chat. In the case of a group chat the bot must have been added to it

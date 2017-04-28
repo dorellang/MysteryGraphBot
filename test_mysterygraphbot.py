@@ -40,7 +40,7 @@ class MysteryGraphBotTestCase(TestCase):
             'graph_url': 'http://my.graph.xd/',
             'graph_visualization_url': 'http://my.graph.xd/visualization/',
             'refresh_time': 15,
-            'chat_whitelist': ['chat1', 'chat2'],
+            'chat_whitelist': [1234, 5678],
             'log_file': 'mysterygraphbot.log',
         }
 
@@ -151,7 +151,7 @@ class MysteryGraphBotTestCase(TestCase):
         get_human_delta_mock.return_value = "5 more noms"
 
         bot = MysteryGraphBot(self.get_config())
-        bot.send_changes_to_chat('1234asdf', 5, 0)
+        bot.send_changes_to_chat(1234, 5, 0)
 
         get_human_delta_mock.assert_called_once_with(5, 0)
         expected_text = (
@@ -164,7 +164,7 @@ class MysteryGraphBotTestCase(TestCase):
             'here</a>!'
         )
         telegram_bot_instance_mock.sendMessage.assert_called_once_with(
-            chat_id='1234asdf',
+            chat_id=1234,
             text=expected_text,
             parse_mode='HTML',
         )
@@ -177,7 +177,7 @@ class MysteryGraphBotTestCase(TestCase):
         bot.send_changes(1, 2)
         self.assertEqual(
             send_changes_to_chat_mock.call_args_list,
-            [call('chat1', 5, 6), call('chat2', 5, 6)]
+            [call(1234, 5, 6), call(5678, 5, 6)]
         )
 
     @patch('mysterygraphbot.MysteryGraphBot.bare_poll', autospec=True)

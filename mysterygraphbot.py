@@ -1,3 +1,4 @@
+from typing import Union
 import json
 import sys
 from time import sleep
@@ -7,7 +8,6 @@ import requests
 from requests import Response
 from marshmallow import Schema, fields
 from telegram.bot import Bot
-
 
 class MysteryGraphBot:
     def __init__(self, config):
@@ -47,7 +47,7 @@ class MysteryGraphBot:
             self.send_changes_to_chat(chat_id, delta_noms, delta_liks)
 
     def send_changes_to_chat(
-        self, chat_id: str, delta_noms: int, delta_liks: int
+        self, chat_id: Union[str, int], delta_noms: int, delta_liks: int
     ):
         text = (
             '<b>mystery</b>\n'
