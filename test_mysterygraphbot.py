@@ -371,6 +371,27 @@ class MysteryGraphBotTestCase(TestCase):
         self.assertFalse(bot.update_data_with_response(response_mock))
         update_data_mock.assert_not_called()
 
+    @patch('mysterygraphbot.MysteryGraphBot.update_data')
+    def test_update_data_with_response_with_no_etag(
+            self, update_data_mock
+    ):
+        response_mock = MagicMock()
+        response_mock.text = """
+            {
+                "links": [
+                    {"source": 1, "target": 2, "value": "lik"}
+                ],
+                "nodes": [
+                    {"index": 1, "name": "node1"},
+                    {"index": 2, "name": "node2"}
+                ]
+            }
+        """
+        response_mock.headers = {}
+        bot = MysteryGraphBot(self.get_config())
+        self.assertFalse(bot.update_data_with_response(response_mock))
+        update_data_mock.assert_not_called()
+
     @patch('mysterygraphbot.MysteryGraphBot.save_data')
     def test_update_data(self, save_data_mock):
         bot = MysteryGraphBot(self.get_config())

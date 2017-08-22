@@ -146,15 +146,19 @@ class MysteryGraphBot:
             )
             etag = response.headers['ETag']
             self.update_data(etag, parsed_graph)
+            return True
         except json.JSONDecodeError:
             logger.error("Graph data is not a valid JSON. Ignoring it.")
-            return False
         except SchemaLoadError as e:
             logger.error(
                 "Graph JSON object has an unexpected format. Ignoring it."
             )
-            return False
-        return True
+        except KeyError:
+            logger.error(
+                "Expected ETag header in graph response. "
+                "Not implemented graph diffing without it yet."
+            )
+        return False
 
     def update_data(self, etag: str, graph: dict) -> None:
         liks = sum(1 for link in graph['links'] if link['value'] == 'lik')
