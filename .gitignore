@@ -1,6 +1,6 @@
 .venv
 *~
 __pycache__/
-mysterygraphbot.conf
-mysterygraphbot.log
-mysterygraphbot.dat
+mystery_graph_bot.conf
+mystery_graph_bot.log
+mystery_graph_bot.dat

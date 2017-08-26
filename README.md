@@ -54,13 +54,13 @@ hard to get it running on other recent Linux OSes ;)
 
 ### Configuring the bot
 
-You need to create a `mysterygraphbot.conf` file in the working directory
+You need to create a `mystery_graph_bot.conf` file in the working directory
 where the bot will run (normally in the repo root). Fortunately we have a
 sample config file that you can base your own configuration on: it's called
-`mysterygraphbot.sample.conf`, just copy it with the proper name and tailor
+`mystery_graph_bot.sample.conf`, just copy it with the proper name and tailor
 it to your needs:
 
-    $ cp mysterygraphbot.sample.conf mysterygraphbot.conf
+    $ cp mystery_graph_bot.sample.conf mystery_graph_bot.conf
 
 You can read more about the configuration file on
 [its own section](#configuration-guide)
@@ -73,10 +73,10 @@ activate it:
 
     $ workon MysteryGraphBot
 
-Now `cd` to a directory with a `mysterygraphbot.conf` file. We have one in the
+Now `cd` to a directory with a `mystery_graph_bot.conf` file. We have one in the
 Repo directory; so enter it and run:
 
-    $ python MysteryGraphBot
+    $ python mystery_graph_bot
 
 There you are :D
 
@@ -91,7 +91,7 @@ TO BE CONTINUED
 
 ## Configuration Guide
 
-The bot's configuration is specified in a JSON file named `mysterygraphbot.conf`
+The bot's configuration is specified in a JSON file named `mystery_graph_bot.conf`
 that must be placed in a file in the current working directory where the Bot is
 ran from. The JSON file has the following structure:
 
