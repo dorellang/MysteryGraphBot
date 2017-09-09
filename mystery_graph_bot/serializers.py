@@ -31,6 +31,11 @@ class Config(Schema):
     log_file = fields.Str(required=True)
 
 
+class DataPair(Schema):
+    new = fields.Nested(Data, required=True)
+    old = fields.Nested(Data, required=False)
+
+
 class Data(Schema):
     etag = fields.Str(required=True)
     liks = fields.Integer(required=True)
@@ -51,3 +56,7 @@ class GraphNode(Schema):
 class Graph(Schema):
     links = fields.Nested(GraphLink, required=True, many=True)
     nodes = fields.Nested(GraphNode, required=True, many=True)
+
+class WrappedGraph(Schema):
+    etag = fields.Str(required=True)
+    graph = fields.Nested(Graph, required=True)
